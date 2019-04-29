@@ -24,13 +24,43 @@ namespace MvcMorning.Controllers
             return View("DetailPerson",person);
         }
 
+
+        [ActionName("Person")]
+        [NonAction]
         public ActionResult ListPersons()
         {
 
             var listPerson = Person.GetListPerson();
-            return View(listPerson);
+            return View("ListPersons",listPerson);
         }
 
+
+        [OutputCache(Duration =15)]
+        public string GetDate()
+        {
+            return DateTime.Now.ToString(); 
+        }
+
+        public ActionResult CreatePerson()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult CreatePerson(Person person)
+        {
+
+            if (ModelState.IsValid)
+            {
+                Person.CreatePerson(person);
+                TempData["SuccesfullySaved"] = "Succesfully Saved";
+                ModelState.Clear();
+
+            }
+
+            return View();
+        }
       
     }
 }
